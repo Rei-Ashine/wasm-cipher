@@ -35,7 +35,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _pkg
   \**********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"16e40c7ab8ba726e7516.wasm\";\n\n//# sourceURL=webpack://create-wasm-app/../pkg/wasm_cipher_bg.wasm?");
+eval("module.exports = __webpack_require__.p + \"e4ee49937a5ecde81231.wasm\";\n\n//# sourceURL=webpack://create-wasm-app/../pkg/wasm_cipher_bg.wasm?");
 
 /***/ })
 

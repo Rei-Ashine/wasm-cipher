@@ -1,7 +1,6 @@
-extern crate wasm_bindgen;
+mod cipher;
 use wasm_bindgen::prelude::*;
 
-mod cipher;
 
 #[wasm_bindgen]
 pub fn encrypt(password: &str, data: &str) -> String {

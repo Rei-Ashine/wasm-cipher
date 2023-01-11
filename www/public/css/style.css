@@ -31,7 +31,6 @@ body {
   width: 100%;
   background-color: #333;
 }
-
 body {
   font-family: "Black Ops One", cursive; /* Google Fonts */
   display: -ms-flexbox;
@@ -130,7 +129,28 @@ label {
   position: relative;
 }
 
+flicker {
+  padding-bottom: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.5s;
+}
+flicker:hover {
+  text-shadow: -4px -3px 0px #71EDE8, 4px 3px 0px #E94150;
+}
+
 img.ribbon {
   width: 50px;
   height: 50px;
+}
+
+.btn-pop {
+  border-radius: 0.2rem;
+  transition: 0.5s;
+}
+.btn-pop i {
+  line-height: 3.5rem;
+}
+.btn-pop:hover {
+  box-shadow: 20px 20px 60px #a4aab3, -20px -20px 60px #fff;
 }

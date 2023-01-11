@@ -26,12 +26,10 @@
 
 <body class="text-center d-flex h-100">
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="mb-auto">
-      <div class="inner">
-        <p>
-          <h1 class="masthead-brand px-3 display-1">Encryption Tool</h1>
-        </p>
-      </div>
+    <header class="m-auto">
+      <flicker>
+        <h1 class="masthead-brand px-3 display-1"> Encryption<br>Tool </h1>
+      </flicker>
     </header>
 
     <main role="main" class="inner cover px-3">
@@ -44,9 +42,9 @@
         <label for="password" style="color: #8c8c8c">Password</label>
       </p>
       <p class="btn-group d-flex" role="group">
-        <button type="button" onclick="enc_click()" class="btn btn-primary fw-bold flex-fill" id="encrypt">Encryption</button>
-        <button type="button" onclick="swap_click()" class="btn btn-secondary fw-bold flex-fill" id="swap">Swap</button>
-        <button type="button" onclick="dec_click()" class="btn btn-warning fw-bold flex-fill" id="decrypt">Decryption</button><br>
+        <button type="button" onclick="enc_click()" class="btn btn-primary fw-bold flex-fill btn-pop" id="encrypt">Encryption</button>
+        <button type="button" onclick="swap_click()" class="btn btn-secondary fw-bold flex-fill btn-pop" id="swap">Swap</button>
+        <button type="button" onclick="dec_click()" class="btn btn-warning fw-bold flex-fill btn-pop" id="decrypt">Decryption</button><br>
       </p>
       <p class="lead form-floating d-flex">
         <textarea class="form-control bg-white flex-fill copy-value" id="outbox" placeholder="Output:" style="padding: 40px; overflow: hidden;" data-clipboard-target="#outbox" readonly></textarea>
@@ -56,7 +54,7 @@
 
     <footer class="mastfoot mt-auto">
       <p>
-        <a href="https://github.com/Rei-Ashine"><img class="ribbon" src="https://Rei-Ashine.github.io/wasm-cipher/www/public/assets/GitHub-Mark-Light-120px-plus.png"></a>
+        <a href="https://github.com/Rei-Ashine"><img class="ribbon btn-pop" src="https://Rei-Ashine.github.io/wasm-cipher/www/public/assets/GitHub-Mark-Light-120px-plus.png"></a>
       </p>
       <div class="inner">
         <p>&copy; 2022<script>new Date().getFullYear()>2022&&document.write("-"+new Date().getFullYear());</script>, Rei Ashine.</p>

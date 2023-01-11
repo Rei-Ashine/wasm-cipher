@@ -1,6 +1,7 @@
 use aes::Aes256;
-use block_modes::{BlockMode, Cbc, block_padding::Pkcs7};
 use sha2::{Sha256, Digest};
+use block_modes::{BlockMode, Cbc, block_padding::Pkcs7};
+
 
 type AesCbc = Cbc<Aes256, Pkcs7>;
 const SALT: &str = "LFsMH#kL!IfY:dcEz9F/dvj17nUN";
@@ -42,6 +43,7 @@ pub fn decrypt(password: &str, data: &str) -> String {
     let result = cipher.decrypt_vec(&bytes[16..]).unwrap();
     String::from_utf8(result).unwrap()
 }
+
 
 #[cfg(test)]
 mod test_cipher {
