@@ -11,41 +11,20 @@ DATE: Jan. 20th, 2023
 ## Directory Structure
 ```
 .
-├── Cargo.lock
-├── Cargo.toml
 ├── README.md
-├── pkg
-│   ├── package.json
-│   ├── wasm_cipher.d.ts
-│   ├── wasm_cipher.js
-│   ├── wasm_cipher_bg.wasm
-│   └── wasm_cipher_bg.wasm.d.ts
+├── Cargo.toml
 ├── PNG
-│   ├── Diagram_EncryptionTool.png
-│   └── EncryptionTool.png
 ├── src
-│   ├── cipher.rs
-│   └── lib.rs
-├── target
-│   ├── CACHEDIR.TAG
-│   ├── debug
-│   ├── release
-│   └── wasm32-unknown-unknown
+│   ├── lib.rs
+│   └── cipher.rs
 └── www
-    ├── LICENSE-APACHE
-    ├── LICENSE-MIT
-    ├── README.md
     ├── bootstrap.js
-    ├── dist
-    ├── index.html
     ├── index.js
-    ├── node_modules
-    ├── package-lock.json
-    ├── package.json
+    ├── index.html
+    ├── dist
     ├── public
+    ├── package.json
     └── webpack.config.js
-
-11 directories, 22 files
 ```
 ---
 ```
