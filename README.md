@@ -45,3 +45,8 @@ DATE: Jan. 20th, 2023
  Total                  15         7443         7175          158          110
 ===============================================================================
 ```
+
+## Reference
+- [『高効率言語 Rust 書きかた・作りかた』](https://www.socym.co.jp/book/1351)
+
+![ref1](https://www.socym.co.jp/wp-content/uploads/2022/120Px_syoei-1.jpg)
