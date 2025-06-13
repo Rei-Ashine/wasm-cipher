@@ -40,15 +40,11 @@ function enc_on() {
     
     try {
         const result = wasmEncrypt(password, input);
-        if (result) {
-            q("#outbox").value = result;
-            q("#outbox").style.color = "";
-        } else {
-            showError("Encryption failed");
-        }
+        q("#outbox").value = result;
+        q("#outbox").style.color = "";
     } catch (err) {
         console.error("Encryption error:", err);
-        showError("Encryption failed");
+        showError(err.message || "Encryption failed");
     }
 }
 
@@ -83,15 +79,11 @@ function dec_on() {
     
     try {
         const result = wasmDecrypt(password, input);
-        if (result) {
-            q("#outbox").value = result;
-            q("#outbox").style.color = "";
-        } else {
-            showError("Decryption failed - check password and input");
-        }
+        q("#outbox").value = result;
+        q("#outbox").style.color = "";
     } catch (err) {
         console.error("Decryption error:", err);
-        showError("Decryption failed - check password and input");
+        showError(err.message || "Decryption failed - check password and input");
     }
 }
 
