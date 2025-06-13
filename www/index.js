@@ -1,66 +1,182 @@
-import init, {encrypt, decrypt} from "../pkg/wasm_cipher.js";
-init().then(() => {
-    window.encrypt = encrypt;
-    window.decrypt = decrypt;
-}) ;
+import {encrypt, decrypt} from "../pkg/wasm_cipher.js";
+
+let wasmLoaded = true; // WASM auto-initializes in newer versions
+let wasmEncrypt = encrypt;
+let wasmDecrypt = decrypt;
+
+console.log("WASM module loaded successfully");
 
 const q = (query) => {
     return document.querySelector(query);
 }
 
+function showError(message) {
+    const outputBox = q("#outbox");
+    outputBox.value = `Error: ${message}`;
+    outputBox.style.color = "#dc3545";
+    setTimeout(() => {
+        outputBox.style.color = "";
+    }, 3000);
+}
+
 function enc_on() {
-    //console.log(q("#inbox"));
-    q("#outbox").value = window.encrypt(q("#password").value, q("#inbox").value) ;
+    if (!wasmLoaded) {
+        showError("Encryption module not loaded yet");
+        return;
+    }
+    
+    const password = q("#password").value;
+    const input = q("#inbox").value;
+    
+    if (!password.trim()) {
+        showError("Please enter a password");
+        return;
+    }
+    
+    if (!input.trim()) {
+        showError("Please enter text to encrypt");
+        return;
+    }
+    
+    try {
+        const result = wasmEncrypt(password, input);
+        q("#outbox").value = result;
+        q("#outbox").style.color = "";
+    } catch (err) {
+        console.error("Encryption error:", err);
+        showError(err.message || "Encryption failed");
+    }
 }
 
 function swap_on() {
-    q("#inbox").value = q("#outbox").value;
-    q("#outbox").value = "";
+    const inbox = q("#inbox");
+    const outbox = q("#outbox");
+    const temp = inbox.value;
+    inbox.value = outbox.value;
+    outbox.value = temp;
+    resizeTextarea(inbox);
+    resizeTextarea(outbox);
 }
 
 function dec_on() {
-    //console.log(q("#inbox"));
-    q("#outbox").value = window.decrypt(q("#password").value, q("#inbox").value) ;
+    if (!wasmLoaded) {
+        showError("Decryption module not loaded yet");
+        return;
+    }
+    
+    const password = q("#password").value;
+    const input = q("#inbox").value;
+    
+    if (!password.trim()) {
+        showError("Please enter a password");
+        return;
+    }
+    
+    if (!input.trim()) {
+        showError("Please enter text to decrypt");
+        return;
+    }
+    
+    try {
+        const result = wasmDecrypt(password, input);
+        q("#outbox").value = result;
+        q("#outbox").style.color = "";
+    } catch (err) {
+        console.error("Decryption error:", err);
+        showError(err.message || "Decryption failed - check password and input");
+    }
 }
 
-function resizer(element) {
-    element.target.style.height = 0;
-    element.target.style.height = element.target.scrollHeight + "px";
+function resizeTextarea(element) {
+    element.style.height = 'auto';
+    element.style.height = element.scrollHeight + 'px';
+}
+
+function resizer(event) {
+    resizeTextarea(event.target);
 }
 
 function resize_textarea() {
     const box_in = q("#inbox");
-    box_in.addEventListener("click", e => { resizer(e) }, false);
-    box_in.addEventListener("keydown", e => { resizer(e) }, false);
-
     const box_out = q("#outbox");
-    box_out.addEventListener("click", e => { resizer(e) }, false);
-    box_out.addEventListener("keydown", e => { resizer(e) }, false);
+    
+    box_in.addEventListener("input", resizer);
+    box_in.addEventListener("keydown", resizer);
+    box_out.addEventListener("input", resizer);
+    box_out.addEventListener("keydown", resizer);
+}
+
+async function copyToClipboard() {
+    const output = q("#outbox").value;
+    
+    if (!output.trim()) {
+        showError("Nothing to copy");
+        return;
+    }
+    
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(output);
+            // Show temporary success message
+            const copyBtn = q("#copy-btn");
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = "Copied!";
+            copyBtn.classList.replace("btn-outline-light", "btn-success");
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.classList.replace("btn-success", "btn-outline-light");
+            }, 2000);
+        } else {
+            // Fallback for older browsers
+            q("#outbox").select();
+            document.execCommand('copy');
+            alert("Copied to clipboard!");
+        }
+    } catch (err) {
+        console.error("Copy failed:", err);
+        showError("Failed to copy to clipboard");
+    }
 }
 
 const main = () => {
-    window.onload = () => {
-        q("#inbox").style.height = q("#inbox").scrollHeight + "px";
-        q("#outbox").style.height = q("#outbox").scrollHeight + "px";
-    }
+    window.addEventListener("load", () => {
+        resizeTextarea(q("#inbox"));
+        resizeTextarea(q("#outbox"));
+    });
 
     resize_textarea();
 
-    const clipboard = new Clipboard(".copy-value");
-    clipboard.on("success", e => {
-        if (q("#outbox").value != "") { alert("Copied!") };
-        e.clearSelection();
-    }, false);
-
-    addEventListener("click", e => {
-        if (e.target.getAttribute("id") == "encrypt") {
-            enc_on();
-        } else if (e.target.getAttribute("id") == "decrypt") {
-            dec_on();
-        } else if (e.target.getAttribute("id") == "swap") {
-            swap_on();
+    // Event delegation for button clicks
+    document.addEventListener("click", e => {
+        const id = e.target.getAttribute("id");
+        switch(id) {
+            case "encrypt":
+                enc_on();
+                break;
+            case "decrypt":
+                dec_on();
+                break;
+            case "swap":
+                swap_on();
+                break;
+            case "copy-btn":
+                copyToClipboard();
+                break;
         }
-    }, false);
+    });
+    
+    // Handle Enter key in password field
+    q("#password").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (e.shiftKey) {
+                dec_on();
+            } else {
+                enc_on();
+            }
+        }
+    });
 };
 
 main();
